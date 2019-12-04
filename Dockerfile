@@ -1,0 +1,1 @@
+FROM mujx/saleor-dashboard

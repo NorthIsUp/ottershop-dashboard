@@ -1,0 +1,28 @@
+setup:
+  addons:
+    - plan: heroku-postgresql:hobby-dev
+      as: DATABASE
+    - plan: heroku-redis:hobby-dev
+      as: REDIS
+    - plan: cloudamqp:lemur
+      as: AMQP
+    - plan: sendgrid:starter
+      as: SENDGRID
+    - plan: scheduler:standar
+  config:
+    ALLOWED_HOSTS: '*'
+    NODE_MODULES_CACHE: false
+    NPM_CONFIG_PRODUCTION: false
+    SECRET_KEY: 'i am not important'
+    NODE_ENV: 'production'
+    DEBUG: false
+    API_URI: https://ottershop.herokuapp.com/graphql/
+    APP_MOUNT_URI: /dashboard/
+build:
+  docker:
+    dashboard: Dockerfile
+run:
+  web:
+    image: dashboard
+    command:
+      - uwsgi --ini /app/saleor/wsgi/uwsgi.ini
